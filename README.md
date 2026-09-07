@@ -1,295 +1,549 @@
 <div align="center">
 
-# 🚕 NYC Yellow Taxi 2021 — End-to-End EDA Project
+# 🚕 NYC Yellow Taxi 2021 — End-to-End Data Analysis
 
-[![BigQuery](https://img.shields.io/badge/Google_BigQuery-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/bigquery)
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org)
-[![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://seaborn.pydata.org)
-[![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge&logo=python&logoColor=white)](https://matplotlib.org)
-[![Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge&logo=google-colab&logoColor=white)](https://colab.research.google.com)
+### **28.1M Cleaned Trips · 30 Business Questions · BigQuery + SQL + Python**
 
----
-
-### 📊 28.1 Million Trips &nbsp;|&nbsp; 30 Business Questions &nbsp;|&nbsp; BigQuery + Python Pipeline
+[![BigQuery](https://img.shields.io/badge/Google_BigQuery-4285F4?style=for-the-badge\&logo=google-cloud\&logoColor=white)](https://cloud.google.com/bigquery)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://python.org)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge\&logo=pandas\&logoColor=white)](https://pandas.pydata.org)
+[![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://seaborn.pydata.org)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge\&logo=python\&logoColor=white)](https://matplotlib.org)
+[![Google Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge\&logo=google-colab\&logoColor=white)](https://colab.research.google.com)
 
 ---
+
+### 🚖 From 30.9M Raw Records → 28.1M Cleaned Trips → 30 Business Questions → Actionable Insights
 
 </div>
 
+---
+
 ## 📌 Project Overview
 
-This project performs a comprehensive **Exploratory Data Analysis (EDA)** of the **NYC Yellow Taxi 2021** dataset — one of the largest publicly available transportation datasets in the world, containing over **30.9 million raw trip records**.
+This project presents an **end-to-end exploratory data analysis (EDA)** of the **NYC Yellow Taxi 2021 dataset**, containing more than **30.9 million raw trip records**.
 
-The analysis follows a complete modern data analytics workflow:
+The project focuses heavily on **data quality, cleaning, validation, SQL-based analysis, statistical exploration, and visualization** rather than simply producing charts.
 
-```
-BigQuery Public Dataset
-        ↓
-  Data Cleaning & Feature Engineering (SQL + Python)
-        ↓
-  Cleaned Table → BigQuery (28.1M rows)
-        ↓
-  EDA — 30 Business Questions (BigQuery SQL)
-        ↓
-  Random Sample → Pandas (100,000 rows)
-        ↓
-  Visualizations (Matplotlib + Seaborn)
-        ↓
-  Insights & Findings
-```
+The analysis was performed using **Google BigQuery for large-scale data processing and SQL analysis**, followed by **Python, Pandas, Matplotlib, and Seaborn** for sample-based exploratory analysis and visualization.
 
----
+### 🔄 Analytical Workflow
 
-## 📂 Project Structure
-
-```
-NYC-Taxi-2021-EDA/
-│
-├── 📓 Initial_exploration_and_cleaning.ipynb     # Pandas EDA on raw sample + cleaning logic
-├── 📓 Nyc_Taxi_sample_visualisation_analysis.ipynb  # Visualizations on 100k cleaned sample
-│
-├── 🗄️ Cleaned_nyc_taxi_table_generator.sql      # BigQuery cleaning script
-├── 🗄️ EDA_nyc_taxi_query.sql                    # 30 business questions in BigQuery SQL
-│
-├── 📋 Data_Cleaning_Methodology.md              # Detailed cleaning decisions and rationale
-├── 📊 Nyc_taxi_dataset_sample_100_000_rows.csv  # 100k row sample used for Python analysis
-│
-└── README.md
+```text
+NYC Yellow Taxi Public Dataset
+              ↓
+     Initial Data Exploration
+              ↓
+     Extensive Data Cleaning
+        & Feature Engineering
+              ↓
+      Cleaned BigQuery Table
+          28.1M Trips
+              ↓
+     30 Business Questions
+          Using SQL
+              ↓
+      Random 100K Sample
+              ↓
+     Python / Pandas Analysis
+              ↓
+   Matplotlib + Seaborn Visuals
+              ↓
+       Cross-Validation
+              ↓
+      Business Insights
 ```
 
 ---
 
-## 🗄️ Dataset
+## 🎯 Project Objectives
 
-| Property | Detail |
-|----------|--------|
-| **Source** | `bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021` |
-| **Original rows** | 30,904,427 |
-| **Cleaned rows** | 28,101,653 |
-| **Retention rate** | 90.93% |
-| **Python sample** | 100,000 rows (random `ORDER BY RAND()`) |
-| **Key columns** | pickup/dropoff datetime, trip distance, fare amount, tip, total amount, passenger count, payment type, pickup/dropoff location |
+The analysis was designed to answer practical business questions around:
 
----
-
-## 🛠️ Tools & Technologies
-
-| Tool | Purpose |
-|------|---------|
-| **Google BigQuery** | Cloud data warehouse — cleaning, storage, SQL EDA |
-| **Google Colab** | Python environment connected to BigQuery |
-| **Python (Pandas)** | Data manipulation and sample analysis |
-| **Matplotlib** | Data visualization |
-| **Seaborn** | Statistical visualizations |
-| **SQL (BigQuery dialect)** | 30 business questions across 6 analytical sections |
+* 🚕 Trip demand and travel patterns
+* ⏰ Peak operating hours
+* 📅 Monthly demand and revenue
+* 💰 Fare and revenue behavior
+* 📏 Distance and trip duration
+* 💳 Payment preferences
+* 👥 Passenger behavior
+* 📍 Pickup and drop-off locations
+* 🛣️ Popular routes
+* 📈 Relationships between operational variables
+* 🚨 Data quality and extreme-value detection
 
 ---
 
-## 🧹 Data Cleaning Summary
+# 🧹 Data Cleaning & Quality Control
 
-Full methodology documented in [`Data_Cleaning_Methodology.md`](Data_Cleaning_Methodology.md)
+One of the major components of this project was **extensive data cleaning**.
 
-| Filter | Condition | Reason |
-|--------|-----------|--------|
-| Year | = 2021 | Raw data contained years 2003–2098 |
-| Trip duration | 1 – 300 minutes | Remove cancelled trips and anomalous long journeys |
-| Trip distance | 0 – 100 miles | Remove impossible and suspicious values |
-| Fare amount | > 0 | Remove unpaid/invalid transactions |
-| Total amount | > 0 | Remove voided transactions |
-| Extra charges | >= 0 | Cannot be negative |
-| Passenger count | 1–5 or NULL | Remove invalid counts, retain NULLs |
+The raw dataset contained significant data-quality issues, including unrealistic years, zero/negative durations, suspicious distances, invalid monetary values, unusual passenger counts, and extreme monetary outliers.
 
-### 🔍 Notable Discovery During EDA
+The final cleaning process retained:
 
-> A significant correlation discrepancy was identified during analysis:
-> - **SQL** `CORR(trip_distance, fare_amount)` = **0.064** (full 28M rows)
-> - **Pandas** `.corr()` on 100k sample = **0.93**
->
-> Investigation revealed **6 extreme fare outliers** (including a fare of **$818,283**) that were collapsing the SQL correlation toward zero across millions of rows. After applying `fare_amount <= 600`, the SQL correlation jumped from **0.064 → 0.935**, confirming the expected strong positive relationship between distance and fare.
->
-> This cross-validation between SQL and Python is a key analytical finding of this project.
+| Metric                                    |      Value |
+| ----------------------------------------- | ---------: |
+| **Original records**                      | 30,904,427 |
+| **Cleaned records**                       | 28,101,643 |
+| **Records removed**                       |  2,802,784 |
+| **Retention rate**                        | **90.93%** |
+| **Records used for Python visualization** |    100,000 |
 
----
+### Cleaning Rules
 
-## 📊 Analysis Sections
+| Field           | Condition               | Reason                                                             |
+| --------------- | ----------------------- | ------------------------------------------------------------------ |
+| Year            | `= 2021`                | Remove irrelevant and corrupted years                              |
+| Trip duration   | `> 1 and < 300 minutes` | Remove extremely short/cancelled trips and anomalous long journeys |
+| Trip distance   | `> 0 and < 100 miles`   | Remove zero/negative and highly suspicious distances               |
+| Fare amount     | `> 0 and <= 600`        | Remove invalid and extreme fare values                             |
+| Total amount    | `> 0 and < 900`         | Remove invalid and extreme transaction values                      |
+| Extra charges   | `>= 0`                  | Prevent invalid negative charges                                   |
+| Passenger count | `1–5 or NULL`           | Remove invalid counts while preserving missing information         |
 
-### 1️⃣ Overall Trip Analysis
-- Total completed trips: **28.1 million**
-- Total revenue generated: **~$563.9 million**
-- Average fare: **$13.97** | Median fare: **$10** *(right-skewed distribution)*
-- Average trip distance: **3.38 miles** | Median: **2 miles**
-- Average trip duration: **14.19 minutes** | Median: **11 minutes**
+📋 A detailed explanation of the cleaning decisions and their rationale is available in:
 
-### 2️⃣ Time & Demand Analysis
-- **November** had the highest trip volume | **January** had the lowest
-- **November** also generated the highest revenue: **$67.1 million**
-- **December** had the highest average fare: **$14.79**
-- Peak demand hour: **18:00** — consistent with end-of-office commute
-- Lowest demand: **04:00** — early morning quiet period
-- **Peak demand does NOT correspond to higher fares** — early morning 5AM had the highest average fare (~$21) due to long airport trips, not volume
-
-### 3️⃣ Fare & Revenue Analysis
-- Revenue per mile: **$5.93**
-- Tips contribute **12.05%** of total revenue
-- Trip category generating highest revenue per trip: **51–60 mile range** (~$155.18 avg)
-- As fare increases, tip amount increases — but **tip percentage decreases** at higher fares
-- Cash trips show almost **zero recorded tips** — not because cash passengers tip less, but because cash tips are not captured in the system
-
-### 4️⃣ Trip Characteristics
-- **Medium trips** (2–10 miles) are most common: **57.2%**
-- **Short trips** (<2 miles): **36.3%**
-- **Long trips** (>10 miles): only **6.4%**
-- Trip distance vs fare correlation: **r = 0.935** (after outlier treatment)
-- Trip distance vs duration correlation: **r = 0.77–0.78** (consistent across SQL and Python)
-
-### 5️⃣ Payment & Passenger Analysis
-- **Credit card** dominates with **20.75 million transactions** vs **5.88 million cash**
-- Credit card trips average: **$20.21** | Cash trips: **$16.83**
-- **Solo riders dominate** — 1-passenger trips account for over **70%** of volume in sample
-- No clear linear relationship between passenger count and average fare
-
-### 6️⃣ Location Analysis
-- **Upper East Side South** — highest pickup demand (~1.40 million trips)
-- **JFK Airport** — highest total revenue despite lower trip count — airport trips are longer and more valuable
-- Several high-demand Manhattan zones generate **below-average revenue per trip** — their contribution is volume-driven, not value-driven
-- **Most popular route:** Upper East Side South ↔ Upper East Side North — strong intra-Manhattan demand
-- **Busiest routes are not necessarily the most profitable** — airport routes generate disproportionately high revenue per trip
+**`nyc_taxi_trips/Data_Cleaning_Methodology.md`**
 
 ---
 
-## 🔑 Key Insights
+# 🔎 A Major Data Quality Discovery
 
-> 💡 **November drives volume, December drives value** — November had the most trips but December had the highest average fare, suggesting different demand dynamics across holiday months.
+One of the most interesting findings emerged while comparing SQL and Python results.
 
-> 💡 **Early morning trips are the most valuable per ride** — 5AM had the highest average fare (~$21), driven by long airport journeys, not commuter volume.
+Initially:
 
-> 💡 **JFK Airport outperforms on revenue despite fewer trips** — airport-originating trips generate disproportionately high revenue compared to high-volume Manhattan zones.
+* **BigQuery SQL correlation:** `0.064`
+* **Pandas sample correlation:** `~0.93`
 
-> 💡 **Credit card dominates but cash tips are invisible** — recorded tip data heavily favors credit card ($3.12 avg) vs cash ($0 recorded), but this reflects data capture limitations, not actual tipping behavior.
+This large discrepancy triggered a deeper investigation.
 
-> 💡 **Outlier detection changed the entire correlation story** — cross-validating SQL and Python results revealed 6 extreme fare records that were masking a true 0.935 correlation. This demonstrates the importance of multi-tool validation in data analysis.
+The analysis identified **six extreme fare records above $600**, including exceptionally large values such as a fare of approximately **$818K**.
 
----
+These extreme observations had a disproportionate effect on the full-dataset correlation.
 
-## ▶️ How to Reproduce
+After applying the extreme-value threshold:
 
-### BigQuery (SQL Analysis)
-1. Access [Google BigQuery](https://console.cloud.google.com/bigquery)
-2. The source dataset is publicly available at:
-   ```
-   bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021
-   ```
-3. Run `Cleaned_nyc_taxi_table_generator.sql` to create the cleaned table
-4. Run queries from `EDA_nyc_taxi_query.sql` — each query is self-contained and independent
+**Trip Distance ↔ Fare Amount**
 
-### Python (Colab Analysis)
-1. Open `Initial_exploration_and_cleaning.ipynb` or `Nyc_Taxi_sample_visualisation_analysis.ipynb` in Google Colab
-2. Authenticate with your Google account
-3. Install required libraries:
-   ```bash
-   pip install google-cloud-bigquery pandas db-dtypes matplotlib seaborn
-   ```
-4. Update the `project_id` variable to your own GCP project
-5. Run all cells
+`0.064 → 0.935`
 
-> **Note:** The 100k sample CSV (`Nyc_taxi_dataset_sample_100_000_rows.csv`) is included for offline analysis without BigQuery access.
+This demonstrated how **extreme observations can dramatically distort statistical relationships**, especially when working with millions of records.
+
+It also became an important example of why **cross-validating results between SQL and Python is valuable in real-world data analysis.**
 
 ---
 
-## ⚠️ Limitations
+# 📊 Analysis Performed
 
-- Revenue figures are based on `total_amount` from trip records — not verified against actual payment processor data
-- Cash tips are not recorded in the dataset — tip analysis reflects only electronic payment tips
-- The Python visualizations are based on a **100,000 row random sample** — percentages and counts represent the sample, not the full 28.1M dataset
-- The 2021 dataset covers the full calendar year but some months may reflect COVID-19 related demand variations
+## 1️⃣ Overall Trip Analysis
+
+* **28.1M** cleaned trips
+* Total recorded revenue: **~$563.9M**
+* Average fare: **$13.97**
+* Median fare: **$10**
+* Average trip distance: **3.38 miles**
+* Median trip distance: **2 miles**
+* Average trip duration: **14.19 minutes**
+* Median trip duration: **11 minutes**
+
+The difference between the mean and median fare demonstrates the **right-skewed nature of taxi fares**.
 
 ---
 
-## 📊 Visualizations
+## 2️⃣ Time & Demand Analysis
+
+### Key Findings
+
+* **November** recorded the highest trip volume.
+* **January** recorded the lowest trip volume.
+* November also generated the highest monthly revenue at approximately **$67.1M**.
+* **December** recorded the highest average fare at approximately **$14.79**.
+* **18:00** was the busiest hour.
+* **04:00** was the quietest hour.
+
+### Demand ≠ Fare
+
+An important finding was that **the busiest hours were not necessarily the most valuable hours**.
+
+The highest average fare occurred around **5 AM (~$21)**, largely influenced by longer trips such as airport journeys.
+
+This shows the difference between:
+
+**High demand ≠ High revenue per trip**
+
+---
+
+## 3️⃣ Fare & Revenue Analysis
+
+* Revenue per mile: approximately **$5.93**
+* Tips represented approximately **12.05% of recorded revenue**
+* The **51–60 mile** category generated the highest average fare per trip at approximately **$155**
+* Tip amount generally increased as fare increased.
+* However, **tip percentage declined at higher fare levels**.
+* Cash trips contain almost no recorded tips.
+
+### Important Data Limitation
+
+The lack of recorded cash tips does **not** necessarily mean cash passengers tip less.
+
+It reflects a limitation of the dataset: cash tips are not captured in the same way as electronic payment tips.
+
+---
+
+# 4️⃣ Trip Characteristics
+
+Trip distances were divided into three categories:
+
+| Category  |     Distance |     Share |
+| --------- | -----------: | --------: |
+| 🚶 Short  |  `< 2 miles` | **36.3%** |
+| 🚕 Medium | `2–10 miles` | **57.2%** |
+| 🛣️ Long  | `> 10 miles` |  **6.4%** |
+
+The majority of taxi journeys were therefore **short-to-medium distance trips**.
+
+### Correlation Analysis
+
+**Trip Distance ↔ Fare**
+
+**r = 0.935** after extreme-value treatment.
+
+**Trip Distance ↔ Duration**
+
+**r ≈ 0.77–0.78**
+
+The strong distance-duration relationship is intuitive: longer journeys generally require more travel time.
+
+---
+
+# 5️⃣ Payment & Passenger Analysis
+
+### Payment
+
+Credit cards were the dominant payment method:
+
+* Credit card: **~20.75M**
+* Cash: **~5.88M**
+
+Average recorded trip amount:
+
+* Credit card: **~$20.21**
+* Cash: **~$16.83**
+
+### Passenger Count
+
+Solo passengers dominate the dataset.
+
+In the 100K Python sample, approximately **72% of trips involved one passenger**.
+
+There was no strong linear relationship between passenger count and average fare.
+
+---
+
+# 6️⃣ Location & Route Analysis
+
+### Pickup Demand
+
+**Upper East Side South** recorded the highest pickup demand, with approximately **1.4M trips**.
+
+### Revenue
+
+**JFK Airport** generated exceptionally high total revenue despite having fewer trips than the busiest Manhattan zones.
+
+This is explained by the longer average distance and higher value of airport journeys.
+
+### Popular Route
+
+The most frequently travelled route was:
+
+**Upper East Side South ↔ Upper East Side North**
+
+### Key Business Finding
+
+> **The busiest routes are not necessarily the most profitable routes.**
+
+High-volume Manhattan routes can generate large amounts of total revenue through sheer trip count, while airport routes can generate substantially more revenue **per individual trip**.
+
+---
+
+# 🔑 Key Business Insights
+
+### 💡 1. November drives volume, while December drives value
+
+November recorded the highest trip volume, while December recorded the highest average fare.
+
+---
+
+### 💡 2. Early-morning trips are disproportionately valuable
+
+The highest average fare occurred around **5 AM**, largely because of longer airport-oriented journeys.
+
+---
+
+### 💡 3. JFK generates high-value trips
+
+Airport trips demonstrate that **trip value matters alongside trip volume**.
+
+---
+
+### 💡 4. Credit cards dominate recorded payments
+
+Electronic payments significantly outnumbered cash payments in the dataset.
+
+---
+
+### 💡 5. Recorded cash tips cannot be interpreted as actual tipping behavior
+
+The dataset does not adequately capture cash tips, making direct comparison of tipping behavior between payment methods unreliable.
+
+---
+
+### 💡 6. Outlier treatment changed the correlation story
+
+The distance-fare relationship initially appeared weak in the full SQL analysis.
+
+After investigating extreme observations, the correlation increased from:
+
+**0.064 → 0.935**
+
+This demonstrates the importance of **data validation, outlier investigation, and cross-tool verification**.
+
+---
+
+# 🛠️ Tools & Technologies
+
+| Technology          | Usage                                                        |
+| ------------------- | ------------------------------------------------------------ |
+| **Google BigQuery** | Large-scale data storage, cleaning and SQL analysis          |
+| **SQL**             | Data cleaning, feature engineering and 30 business questions |
+| **Google Colab**    | Python analysis environment                                  |
+| **Python**          | Exploratory analysis                                         |
+| **Pandas**          | Data manipulation and statistical analysis                   |
+| **Matplotlib**      | Visualization                                                |
+| **Seaborn**         | Statistical visualization                                    |
+
+---
+
+# 📂 Repository Structure
+
+The project is organized into separate sections for reproducibility and easier navigation.
+
+```text
+Nyc-Taxi-Trips--Bigquery-Pandas-Maplotlib-analysis/
+│
+├── README.md
+│
+└── nyc_taxi_trips/
+    │
+    ├── Jupyter_notebooks/
+    │   ├── Initial_exploration_and_cleaning_.ipynb
+    │   └── Nyc_Taxi_sample_visualisation_analysis.ipynb
+    │
+    ├── SQL Files/
+    │   ├── Cleaned_nyc_taxi_table_generator (2).sql
+    │   └── EDA_nyc_taxi_query (2).sql
+    │
+    ├── Visual_graph_screenshots/
+    │   ├── Screenshot 2026-09-08 002723.png
+    │   ├── Screenshot 2026-09-08 002737.png
+    │   ├── ...
+    │   └── Screenshot 2026-09-08 002922.png
+    │
+    ├── Data_Cleaning_Methodology.md
+    └── Nyc_taxi_dataset_sample(100_000 rows)
+```
+
+The repository structure has been separated into **SQL, notebooks, visualizations, and methodology**, making the project easier to navigate and reproduce.
+
+---
+
+# ▶️ How to Reproduce
+
+## BigQuery Analysis
+
+1. Open Google BigQuery.
+2. Access the public NYC Yellow Taxi 2021 dataset.
+3. Run the cleaning script located in:
+
+`nyc_taxi_trips/SQL Files/`
+
+4. The script creates the cleaned analysis table.
+5. Run the 30 analytical questions from the EDA SQL file.
+
+### Source Dataset
+
+```text
+bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021
+```
+
+---
+
+## Python Analysis
+
+The Python analysis uses a **100,000-row random sample** from the cleaned dataset.
+
+The notebooks are located in:
+
+`nyc_taxi_trips/Jupyter_notebooks/`
+
+The notebooks perform:
+
+* Exploratory analysis
+* Distribution analysis
+* Correlation analysis
+* Trip categorization
+* Payment analysis
+* Passenger analysis
+* Visualization
+* Statistical validation
+
+---
+
+# 📊 Visualizations
+
+The project includes visual analysis covering:
 
 ### 🕐 Trips by Hour
-![Trips by Hour](Visual_graph_screenshots/trips_by_hour.png)
-> Peak demand at **18:00**, lowest at **04:00**. Clear office commute pattern visible.
 
----
+Identifies peak demand periods and daily operating patterns.
 
 ### 📅 Trips by Month
-![Trips by Month](Visual_graph_screenshots/trips_by_month.png)
-> January and February had the lowest demand. October and November peaked at ~11,250 trips in the sample.
 
----
+Shows seasonal/monthly variation in trip demand.
 
-### 🌡️ Heatmap — Hour × Day of Week
-![Heatmap Hour vs Day](Visual_graph_screenshots/heatmap_hour_day.png)
-> Friday and Thursday show the darkest cells during evening hours — confirming end-of-week peak demand. Early morning hours (0–5) are consistently light across all days.
+### 🌡️ Hour × Day Heatmap
 
----
+Highlights demand concentration across different days and hours.
 
 ### 💰 Average Fare by Hour
-![Average Fare by Hour](Visual_graph_screenshots/avg_fare_by_hour.png)
-> **5AM spike (~$21)** driven by long airport trips — not commuter volume. Business hours (8AM–1PM) show the lowest average fares (~$13).
 
----
+Shows that high-demand periods do not necessarily produce the highest average fare.
 
-### 📏 Trip Distance vs Fare Amount *(r = 0.935)*
-![Distance vs Fare](Visual_graph_screenshots/distance_vs_fare.png)
-> Strong positive correlation confirmed after outlier treatment. The orange regression line shows the clear linear relationship.
+### 📏 Distance vs Fare
 
----
+Demonstrates the strong relationship between journey distance and fare after extreme-value treatment.
 
-### ⏱️ Trip Distance vs Duration *(r = 0.77)*
-![Distance vs Duration](Visual_graph_screenshots/distance_vs_duration.png)
-> Strong positive correlation — longer trips naturally take more time. Consistent result across both SQL (0.78) and Python (0.77).
+### ⏱️ Distance vs Duration
 
----
+Shows the relationship between travel distance and journey duration.
 
 ### 📊 Trip Duration Distribution
-![Trip Duration Distribution](Visual_graph_screenshots/trip_duration_distribution.png)
-> Heavily right-skewed — majority of trips fall between 1–20 minutes. Long tail confirms presence of occasional long-distance journeys.
 
----
+Highlights the right-skewed nature of trip duration.
 
-### 🚗 Average Fare by Trip Duration Category
-![Fare by Duration Category](Visual_graph_screenshots/fare_by_duration_category.png)
-> Long trips (~$42) generate significantly higher average fares than medium (~$15) and short (~$7) trips.
+### 🚗 Average Fare by Duration Category
 
----
+Shows how longer journeys generate substantially higher average fares.
 
 ### 💳 Payment Type Distribution
-![Payment Type Distribution](Visual_graph_screenshots/payment_type_distribution.png)
-> **Credit card dominates** with 73,668 transactions vs 21,053 cash in the 100k sample — consistent with full dataset ratio.
 
----
+Shows the dominance of credit-card payments.
 
 ### 👥 Passenger Count Distribution
-![Passenger Count Distribution](Visual_graph_screenshots/passenger_count_distribution.png)
-> Solo riders (~72,000) overwhelmingly dominate — NYC taxis are primarily used for individual commuting rather than group travel.
+
+Shows the dominance of solo passenger journeys.
+
+All visualization screenshots are available in:
+
+`nyc_taxi_trips/Visual_graph_screenshots/`
 
 ---
 
-## 📁 Related Files
+# ⚠️ Limitations
 
-- 📋 [Data Cleaning Methodology](Data_Cleaning_Methodology.md) — detailed explanation of every cleaning decision
-- 🗄️ [BigQuery EDA Queries](EDA_nyc_taxi_query.sql) — all 30 SQL business questions with insights
-- 📓 [Python Visualizations Notebook](Nyc_Taxi_sample_visualisation_analysis.ipynb) — open in Google Colab
+This analysis has several important limitations:
+
+* Revenue is based on the `total_amount` recorded in the dataset and has not been independently verified against payment processor records.
+* Cash tips are not captured reliably, so tip analysis primarily represents recorded electronic-payment tips.
+* Python visualizations use a **100,000-row random sample**, not the entire 28.1M cleaned dataset.
+* Some 2021 demand patterns may have been influenced by the continuing effects of the COVID-19 pandemic.
+* Outlier thresholds were established specifically for analytical purposes and should not automatically be interpreted as proof that every excluded transaction was invalid.
+* The analysis focuses on the variables available in the public dataset and therefore cannot explain factors such as weather, traffic conditions, driver availability, or passenger demographics.
+
+---
+
+# 📋 Project Documentation
+
+### 🧹 Data Cleaning Methodology
+
+Detailed explanation of the cleaning decisions, assumptions, anomalies and thresholds:
+
+`nyc_taxi_trips/Data_Cleaning_Methodology.md`
+
+### 🗄️ SQL Analysis
+
+Contains the BigQuery cleaning pipeline and **30 business questions**:
+
+`nyc_taxi_trips/SQL Files/`
+
+### 📓 Python Analysis
+
+Contains the exploratory and visualization notebooks:
+
+`nyc_taxi_trips/Jupyter_notebooks/`
+
+### 📊 Visualizations
+
+All generated visualization screenshots:
+
+`nyc_taxi_trips/Visual_graph_screenshots/`
+
+---
+
+# 🚀 What This Project Demonstrates
+
+This project demonstrates practical experience with:
+
+**Large-scale SQL analysis**
+
+→ Working with tens of millions of records in BigQuery.
+
+**Data cleaning**
+
+→ Identifying and handling invalid, suspicious and extreme observations.
+
+**Feature engineering**
+
+→ Creating trip duration, year, day and month analytical features.
+
+**Exploratory Data Analysis**
+
+→ Investigating distributions, relationships and behavioral patterns.
+
+**Statistical reasoning**
+
+→ Using correlation, distributions, averages and medians to understand the data.
+
+**Cross-tool validation**
+
+→ Comparing BigQuery results against Python/Pandas analysis.
+
+**Business analysis**
+
+→ Translating millions of raw records into understandable business findings.
+
+**Data storytelling**
+
+→ Turning analytical results into clear visual and business insights.
 
 ---
 
 <div align="center">
 
-## 👤 Author
+# 👤 Author
 
-**Rahul Datta Roy**
+## **Rahul Datta Roy**
 
-Aspiring Data Analyst | SQL | Python | Power BI | BigQuery
+**Data Analyst | SQL | Python | Power BI | BigQuery**
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/rahul-datta-roy-0340a7209)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rahuldattaroy2727-cmd)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge\&logo=linkedin\&logoColor=white)](https://linkedin.com/in/rahul-datta-roy-0340a7209)
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/rahuldattaroy2727-cmd)
 
 ---
 
-*⭐ If you found this project useful, consider giving it a star!*
+### ⭐ If you found this project useful, consider giving it a star!
 
 </div>
-
