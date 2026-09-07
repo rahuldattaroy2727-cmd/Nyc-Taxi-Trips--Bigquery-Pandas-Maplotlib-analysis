@@ -632,48 +632,48 @@ The notebooks perform:
 # 📊 Visualizations
 
 The project includes visual analysis covering:
-![Trips by Hour](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_hour.png)
+
 
 ### 🕐 Trips by Hour
 
 Identifies peak demand periods and daily operating patterns.
-
+![Trips by Hour](nyc_taxi_trips/Visual_graph_screenshots/Trips_by_hour.png)
 ### 📅 Trips by Month
 
 Shows seasonal/monthly variation in trip demand.
-
+![Trips by Month](nyc_taxi_trips/Visual_graph_screenshots/Trip_by_month.png)
 ### 🌡️ Hour × Day Heatmap
 
 Highlights demand concentration across different days and hours.
-
+![Heat_Map](nyc_taxi_trips/Visual_graph_screenshots/Heat_map_HOUR_X_DAYS.png)
 ### 💰 Average Fare by Hour
 
 Shows that high-demand periods do not necessarily produce the highest average fare.
-
+![Avg_fare_by_Hour](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_hour.png)
 ### 📏 Distance vs Fare
 
 Demonstrates the strong relationship between journey distance and fare after extreme-value treatment.
-
+![Distance_vs_fare](nyc_taxi_trips/Visual_graph_screenshots/Trip_distance_vs_trip_fare.png)
 ### ⏱️ Distance vs Duration
 
 Shows the relationship between travel distance and journey duration.
-
+![Distance_vs_Duration](nyc_taxi_trips/Visual_graph_screenshots/Trip_datance_vs_trip_duration.png)
 ### 📊 Trip Duration Distribution
 
 Highlights the right-skewed nature of trip duration.
-
+![Trip_duration_distribution](nyc_taxi_trips/Visual_graph_screenshots/Trip_duration_distribution.png)
 ### 🚗 Average Fare by Duration Category
 
 Shows how longer journeys generate substantially higher average fares.
-
+![Avg_fare_by_duration](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_trip_duration.png)
 ### 💳 Payment Type Distribution
 
 Shows the dominance of credit-card payments.
-
+![Payment_distribution](nyc_taxi_trips/Visual_graph_screenshots/Payment_type_sistribution.png)
 ### 👥 Passenger Count Distribution
 
 Shows the dominance of solo passenger journeys.
-
+![Passenger_count](nyc_taxi_trips/Visual_graph_screenshots/Passenger_count_distribution.png)
 All visualization screenshots are available in:
 
 `nyc_taxi_trips/Visual_graph_screenshots/`
