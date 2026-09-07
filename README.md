@@ -628,53 +628,92 @@ The notebooks perform:
 * Statistical validation
 
 ---
+# 📊 Visualizations & Key Insights
 
-# 📊 Visualizations
-
-The project includes visual analysis covering:
-
+The following visualizations were created using a **random sample of 100,000 rows** from the cleaned NYC Yellow Taxi 2021 dataset.
 
 ### 🕐 Trips by Hour
 
-Identifies peak demand periods and daily operating patterns.
 ![Trips by Hour](nyc_taxi_trips/Visual_graph_screenshots/Trips_by_hour.png)
+
+> **Insight:** Demand is lowest during the early-morning hours, rises throughout the day, and reaches a clear peak around **18:00**, before gradually declining into the evening.
+
+---
+
 ### 📅 Trips by Month
 
-Shows seasonal/monthly variation in trip demand.
 ![Trips by Month](nyc_taxi_trips/Visual_graph_screenshots/Trip_by_month.png)
-### 🌡️ Hour × Day Heatmap
 
-Highlights demand concentration across different days and hours.
-![Heat_Map](nyc_taxi_trips/Visual_graph_screenshots/Heat_map_HOUR_X_DAYS.png)
+> **Insight:** **January and February** have the lowest demand. Trips increase steadily through the middle of the year, while **October to December** show the strongest demand, with **November among the highest-demand months**.
+
+---
+
+### 🌡️ Trips by Hour & Day of Week
+
+![Heat Map](nyc_taxi_trips/Visual_graph_screenshots/Heat_map_HOUR_X_DAYS.png)
+
+> **Insight:** **Saturday and Sunday** show noticeable demand around **midnight**, possibly reflecting weekend late-night activity. Weekend demand is also lower around **6–7 AM** compared with weekdays before rising toward the evening peak.
+
+---
+
 ### 💰 Average Fare by Hour
 
-Shows that high-demand periods do not necessarily produce the highest average fare.
-![Avg_fare_by_Hour](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_hour.png)
-### 📏 Distance vs Fare
+![Avg Fare by Hour](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_hour.png)
 
-Demonstrates the strong relationship between journey distance and fare after extreme-value treatment.
-![Distance_vs_fare](nyc_taxi_trips/Visual_graph_screenshots/Trip_distance_vs_trip_fare.png)
-### ⏱️ Distance vs Duration
+> **Insight:** Average fares peak in the early morning, reaching **over $21 around 5 AM**, then remain lower during regular business hours. The early spike may reflect a higher share of longer-distance trips.
 
-Shows the relationship between travel distance and journey duration.
-![Distance_vs_Duration](nyc_taxi_trips/Visual_graph_screenshots/Trip_datance_vs_trip_duration.png)
+---
+
+### 📏 Trip Distance vs Fare
+
+![Distance vs Fare](nyc_taxi_trips/Visual_graph_screenshots/Trip_distance_vs_trip_fare.png)
+
+> **Insight:** Trip distance and fare show a **strong positive relationship (r ≈ 0.935)** after excluding six extreme fare outliers above $600.
+
+---
+
+### ⏱️ Trip Distance vs Duration
+
+![Distance vs Duration](nyc_taxi_trips/Visual_graph_screenshots/Trip_datance_vs_trip_duration.png)
+
+> **Insight:** A **strong positive correlation (r ≈ 0.77)** shows that longer trips generally require more travel time.
+
+---
+
 ### 📊 Trip Duration Distribution
 
-Highlights the right-skewed nature of trip duration.
-![Trip_duration_distribution](nyc_taxi_trips/Visual_graph_screenshots/Trip_duration_distribution.png)
-### 🚗 Average Fare by Duration Category
+![Trip Duration Distribution](nyc_taxi_trips/Visual_graph_screenshots/Trip_duration_distribution.png)
 
-Shows how longer journeys generate substantially higher average fares.
-![Avg_fare_by_duration](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_trip_duration.png)
+> **Insight:** Trip durations are concentrated in the shorter ranges, with frequencies generally declining as duration increases and a long tail representing fewer longer trips.
+
+---
+
+### 🚕 Average Fare by Trip Duration
+
+![Avg Fare by Duration](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_trip_duration.png)
+
+> **Insight:** Average fare increases substantially with trip duration, with **long trips generating the highest average fares** and short trips the lowest.
+
+---
+
 ### 💳 Payment Type Distribution
 
-Shows the dominance of credit-card payments.
-![Payment_distribution](nyc_taxi_trips/Visual_graph_screenshots/Payment_type_sistribution.png)
+![Payment Distribution](nyc_taxi_trips/Visual_graph_screenshots/Payment_type_sistribution.png)
+
+> **Insight:** **Credit card payments dominate** the sample, followed by cash. The sample also contains a noticeable number of **undocumented payment types**.
+
+---
+
 ### 👥 Passenger Count Distribution
 
-Shows the dominance of solo passenger journeys.
-![Passenger_count](nyc_taxi_trips/Visual_graph_screenshots/Passenger_count_distribution.png)
-All visualization screenshots are available in:
+![Passenger Count](nyc_taxi_trips/Visual_graph_screenshots/Passenger_count_distribution.png)
+
+> **Insight:** **Single-passenger trips dominate** the sample, with over **70,000** observations. Two-passenger trips are considerably lower, while trips with three or more passengers make up only a small share.
+
+---
+
+> **Note:** The visualizations are based on a random **100,000-row sample** from the cleaned dataset and are intended to illustrate the major patterns identified during the exploratory data analysis.
+
 
 `nyc_taxi_trips/Visual_graph_screenshots/`
 
