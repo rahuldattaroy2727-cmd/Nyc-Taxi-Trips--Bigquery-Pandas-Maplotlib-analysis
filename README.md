@@ -361,22 +361,250 @@ The repository structure has been separated into **SQL, notebooks, visualization
 
 # ▶️ How to Reproduce
 
-## BigQuery Analysis
+This project can be reproduced using **Google BigQuery + Python/Google Colab**.
 
-1. Open Google BigQuery.
-2. Access the public NYC Yellow Taxi 2021 dataset.
-3. Run the cleaning script located in:
+> **Important:** You must use your own Google Cloud project and replace the project ID in the SQL files. Do not use the author's project ID.
 
-`nyc_taxi_trips/SQL Files/`
+---
 
-4. The script creates the cleaned analysis table.
-5. Run the 30 analytical questions from the EDA SQL file.
+## 🗄️ Part 1 — BigQuery Setup
 
-### Source Dataset
+### Step 1 — Create a Google Cloud Project
+
+If you do not already have a Google Cloud project:
+
+1. Open Google Cloud Console.
+2. Create a new project.
+3. Give the project any name you prefer.
+4. Note your **Project ID** — you will need it in the SQL script.
+
+You will use this project to create and store your own cleaned NYC Taxi table.
+
+---
+
+### Step 2 — Open BigQuery
+
+Open BigQuery Studio from your Google Cloud project.
+
+The original NYC Yellow Taxi dataset is publicly available through BigQuery:
 
 ```text
 bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021
 ```
+
+You do **not** need to copy the public dataset into your project.
+
+---
+
+## 🧹 Part 2 — Create the Cleaned Table
+
+Before running the EDA queries, you must first create the cleaned table.
+
+Open:
+
+```text
+nyc_taxi_trips/
+└── SQL Files/
+    └── Cleaned_nyc_taxi_table_generator (2).sql
+```
+
+### Step 3 — Update the Project ID
+
+At the beginning of the SQL file, the cleaned table is created using a project ID.
+
+Replace the author's project ID with **your own Google Cloud Project ID**.
+
+For example:
+
+```text
+CREATE OR REPLACE TABLE `YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data`
+```
+
+Replace:
+
+```text
+YOUR_PROJECT_ID
+```
+
+with your own Project ID.
+
+> **Do not change the public dataset reference**:
+>
+> `bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021`
+>
+> Only the destination project/table should use your own project.
+
+---
+
+### Step 4 — Enable the SQL
+
+The cleaning SQL file contains explanatory comments describing the cleaning decisions.
+
+The executable SQL statements must be uncommented before running the query.
+
+After replacing the project ID and removing the `#` comment markers from the executable SQL, run the complete cleaning query in BigQuery.
+
+The script will:
+
+* Create the required derived columns
+* Filter the data to 2021
+* Remove invalid trip durations
+* Remove suspicious trip distances
+* Remove invalid fare and total amounts
+* Handle invalid passenger counts
+* Remove extreme fare and transaction outliers
+* Create the final cleaned table
+
+The resulting table will be:
+
+```text
+YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
+```
+
+The original analysis produced:
+
+**30,904,427 raw records → 28,101,643 cleaned records**
+
+with a retention rate of approximately **90.93%**.
+
+> **Note:** Query results may change if the underlying public dataset is updated.
+
+---
+
+## 📊 Part 3 — Run the 30 Business Questions
+
+Once the cleaned table has been successfully created, open:
+
+```text
+nyc_taxi_trips/
+└── SQL Files/
+    └── EDA_nyc_taxi_query (2).sql
+```
+
+Before running the queries, replace any reference to the author's cleaned table with your own:
+
+```text
+YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
+```
+
+The SQL file contains **30 business questions** covering:
+
+* Overall trip performance
+* Time and demand
+* Fare and revenue
+* Trip characteristics
+* Payment and passenger analysis
+* Pickup/drop-off locations and routes
+
+Each query is designed to be run independently.
+
+---
+
+# 🐍 Part 4 — Python / Google Colab Analysis
+
+The Python portion of the project uses a **100,000-row random sample** of the cleaned data rather than loading all 28M+ rows into Pandas.
+
+The notebooks are located in:
+
+```text
+nyc_taxi_trips/
+└── Jupyter_notebooks/
+```
+
+### Step 1 — Open the Notebook
+
+Open either:
+
+* `Initial_exploration_and_cleaning_.ipynb`
+* `Nyc_Taxi_sample_visualisation_analysis.ipynb`
+
+These notebooks can be opened using **Google Colab** or Jupyter Notebook.
+
+---
+
+### Step 2 — Connect to BigQuery
+
+If reproducing the Python analysis from BigQuery:
+
+1. Authenticate with your Google account.
+2. Connect the notebook to your Google Cloud project.
+3. Update the `project_id` variable to **your own Project ID**.
+4. Make sure the notebook references your cleaned table:
+
+```text
+YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
+```
+
+---
+
+### Step 3 — Install Required Libraries
+
+The Python environment requires:
+
+```text
+google-cloud-bigquery
+pandas
+db-dtypes
+matplotlib
+seaborn
+```
+
+---
+
+### Alternative: Offline Python Analysis
+
+A **100,000-row sample CSV** is included in the repository.
+
+This allows the Python visualizations and sample analysis to be explored without querying BigQuery.
+
+The CSV contains the sample used for the Python analysis, while the BigQuery SQL files contain the full-scale analysis logic.
+
+---
+
+# 🔄 Complete Reproduction Flow
+
+For the full project, follow this order:
+
+```text
+1. Create your Google Cloud Project
+              ↓
+2. Open BigQuery
+              ↓
+3. Access the public NYC Taxi dataset
+              ↓
+4. Open the Cleaning SQL file
+              ↓
+5. Replace the author's Project ID
+   with YOUR Project ID
+              ↓
+6. Uncomment the executable SQL
+              ↓
+7. Run the Cleaning SQL
+              ↓
+8. Your cleaned_taxi_data table is created
+              ↓
+9. Open the EDA SQL file
+              ↓
+10. Replace table references with YOUR
+    cleaned table
+              ↓
+11. Run the 30 business questions
+              ↓
+12. Use the 100K sample / Python notebooks
+    for visualization and additional EDA
+              ↓
+13. Compare SQL and Python findings
+              ↓
+14. Explore the visualizations and insights
+```
+
+> ### ⚠️ Important
+>
+> The author's Google Cloud project is **not required** to reproduce this project.
+>
+> You should create your **own Google Cloud project**, create your own `Nyc_taxi_trips` dataset if necessary, and generate your own `cleaned_taxi_data` table using the provided cleaning SQL.
+>
+> The public NYC Taxi dataset remains the source dataset; the cleaned table is created inside **your own project**.
 
 ---
 
