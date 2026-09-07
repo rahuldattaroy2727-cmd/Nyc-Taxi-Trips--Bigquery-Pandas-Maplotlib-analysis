@@ -632,7 +632,7 @@ The notebooks perform:
 # 📊 Visualizations
 
 The project includes visual analysis covering:
-![Trips by Hour](nyc_taxi_trips/Visual_graph_screenshots/Screenshot 2026-09-08 002922.png)
+![Trips by Hour](nyc_taxi_trips/Visual_graph_screenshots/Avg_fare_by_hour.png)
 
 ### 🕐 Trips by Hour
 
