@@ -351,8 +351,8 @@ The project extends the traditional EDA with **geospatial analysis using GeoPand
 The taxi trip data contains numeric location identifiers such as:
 
 ```text
-PULocationID
-DOLocationID
+pickup_location_id
+dropoff_location_id
 ```
 
 These IDs are matched with the geographic `LocationID` values contained in the NYC Taxi Zone shapefile.
@@ -391,7 +391,7 @@ The maps use taxi-zone polygons rather than individual trip points, making it po
 
 ## 📍 Pickup Demand by Taxi Zone
 
-![Pickup Demand by Taxi Zone](nyc_taxi_trips/taxi_zones_shape_file/Pickup_demand_by_taxi_zone.png)
+![Pickup Demand by Taxi Zone](nyc_taxi_trips/Visual_graph_screenshots/NYC_Taxi_Pickup_Demand_by_Zone.png)
 
 > **Insight:** Pickup demand is concentrated in specific high-activity areas, particularly across Manhattan and major transportation zones. The choropleth highlights how taxi demand varies substantially between NYC taxi zones.
 
@@ -399,7 +399,7 @@ The maps use taxi-zone polygons rather than individual trip points, making it po
 
 ## 📍 Drop-off Demand by Taxi Zone
 
-![Drop-off Demand by Taxi Zone](nyc_taxi_trips/taxi_zones_shape_file/Dropoff_demand_by_taxi_zone.png)
+![Drop-off Demand by Taxi Zone](nyc_taxi_trips/Visual_graph_screenshots/NYC_Taxi_Dropoff_by_zone.png)
 
 > **Insight:** Drop-off activity shows a geographic distribution that differs from pickup demand, helping identify areas that function as major destinations for taxi journeys.
 
@@ -407,7 +407,7 @@ The maps use taxi-zone polygons rather than individual trip points, making it po
 
 ## 💰 Average Fare by Taxi Zone
 
-![Average Fare by Taxi Zone](nyc_taxi_trips/taxi_zones_shape_file/Average_fare_by_taxi_zone.png)
+![Average Fare by Taxi Zone](nyc_taxi_trips/Visual_graph_screenshots/Average_fare_by_zone_map.png)
 
 > **Insight:** Average fare varies considerably by pickup zone. Areas associated with longer-distance journeys, including airport-oriented trips, tend to show higher average fares than zones dominated by shorter local journeys.
 
