@@ -376,9 +376,9 @@ If you do not already have a Google Cloud project:
 1. Open Google Cloud Console.
 2. Create a new project.
 3. Give the project any name you prefer.
-4. Note your **Project ID** — you will need it in the SQL script.
+4. Note your **Project ID** — you will need it in the SQL scripts and Python notebooks.
 
-You will use this project to create and store your own cleaned NYC Taxi table.
+You will use this project to create and store your own cleaned NYC Taxi table and lookup table.
 
 ---
 
@@ -428,7 +428,7 @@ YOUR_PROJECT_ID
 
 with your own Project ID.
 
-> **Do not change the public dataset reference**:
+> **Do not change the public dataset reference:**
 >
 > `bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021`
 >
@@ -452,7 +452,7 @@ The script will:
 * Remove suspicious trip distances
 * Remove invalid fare and total amounts
 * Handle invalid passenger counts
-* Remove extreme fare and transaction outliers
+* Apply the project's defined outlier and data-quality filters
 * Create the final cleaned table
 
 The resulting table will be:
@@ -461,75 +461,88 @@ The resulting table will be:
 YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
 ```
 
-The original analysis produced:
-
-**30,904,427 raw records → 28,101,643 cleaned records**
-
-with a retention rate of approximately **90.93%**.
-
-> **Note:** Query results may change if the underlying public dataset is updated.
+> **Note:** Query results may vary if the underlying public dataset is updated.
 
 ---
-📍 Part 3 — Import the Taxi Zone Lookup Table
 
-The project also uses a Taxi Zone Lookup Table to translate the numeric pickup and drop-off location IDs in the taxi dataset into meaningful NYC taxi zone names and geographic information.
+## 📍 Part 3 — Import the Taxi Zone Lookup Table
+
+The project also uses a **Taxi Zone Lookup Table** to translate the numeric pickup and drop-off location IDs in the taxi dataset into meaningful NYC taxi zone names and geographic information.
 
 The lookup file is included in the repository:
 
+```text
 nyc_taxi_trips/
 └── taxi_zone_lookup.csv
-Step 5 — Upload the Lookup Table to BigQuery
+```
+
+### Step 5 — Upload the Lookup Table to BigQuery
 
 After creating the cleaned taxi table, upload:
 
+```text
 taxi_zone_lookup.csv
+```
 
 to your own BigQuery project.
 
 Create a dataset if you do not already have one:
 
+```text
 YOUR_PROJECT_ID.Nyc_taxi_trips
+```
 
 Then create/import the lookup table as:
 
+```text
 YOUR_PROJECT_ID.Nyc_taxi_trips.taxi_zone_lookup
+```
 
 When importing the CSV, make sure BigQuery detects the column names from the first row of the file.
 
 The lookup table is used to map:
 
-PULocationID → Pickup Zone
-DOLocationID → Drop-off Zone
+* `PULocationID` → Pickup Zone
+* `DOLocationID` → Drop-off Zone
 
 This allows the numeric location IDs in the taxi dataset to be converted into readable geographic information.
 
-Important: The lookup table is a supporting reference table and does not replace the original NYC Taxi dataset.
+> **Important:** The lookup table is a supporting reference table and does **not** replace the original NYC Taxi dataset.
 
-📊 Part 4 — Run the 30 Business Questions
+---
+
+## 📊 Part 4 — Run the 30 Business Questions
 
 Once the cleaned table has been successfully created, open:
 
+```text
 nyc_taxi_trips/
 └── SQL Files/
     └── EDA_nyc_taxi_query (2).sql
+```
 
 Before running the queries, replace any reference to the author's cleaned table with your own:
 
+```text
 YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
+```
 
-The SQL file contains 30 business questions covering:
+The SQL file contains **30 business questions** covering:
 
-Overall trip performance
-Time and demand
-Fare and revenue
-Trip characteristics
-Payment and passenger analysis
-Pickup/drop-off locations and routes
+* Overall trip performance
+* Time and demand
+* Fare and revenue
+* Trip characteristics
+* Payment and passenger analysis
+* Pickup/drop-off locations and routes
 
 Each query is designed to be run independently.
-# 🐍 Part 4 — Python / Google Colab Analysis
 
-The Python portion of the project uses a **100,000-row random sample** of the cleaned data rather than loading all 28M+ rows into Pandas.
+---
+
+# 🐍 Part 5 — Python / Google Colab Analysis
+
+The Python portion of the project uses a **100,000-row random sample** of the cleaned data rather than loading the entire dataset into Pandas.
 
 The notebooks are located in:
 
@@ -564,7 +577,31 @@ YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
 
 ---
 
-### Step 3 — Install Required Libraries
+### Step 3 — Import the Taxi Zone Lookup Table in Pandas
+
+For the geospatial analysis, the `taxi_zone_lookup.csv` file must also be loaded into the Python environment.
+
+The lookup table will be used together with the taxi trip data to translate:
+
+```text
+PULocationID
+DOLocationID
+```
+
+into:
+
+```text
+Pickup Zone
+Drop-off Zone
+```
+
+The location IDs from the taxi trip data can then be matched with the corresponding records in the lookup table.
+
+This lookup will be used for the **geospatial analysis and visualizations** created later in the project.
+
+---
+
+### Step 4 — Install Required Libraries
 
 The Python environment requires:
 
@@ -576,19 +613,34 @@ matplotlib
 seaborn
 ```
 
----
-
-### Alternative: Offline Python Analysis
-
-A **100,000-row sample CSV** is included in the repository.
-
-This allows the Python visualizations and sample analysis to be explored without querying BigQuery.
-
-The CSV contains the sample used for the Python analysis, while the BigQuery SQL files contain the full-scale analysis logic.
+Additional geospatial libraries may be required for the geospatial visualizations, depending on the visualization method used.
 
 ---
 
-# 🔄 Complete Reproduction Flow
+## 📂 Repository Structure
+
+The important project files are organized approximately as follows:
+
+```text
+nyc_taxi_trips/
+│
+├── SQL Files/
+│   ├── Cleaned_nyc_taxi_table_generator (2).sql
+│   └── EDA_nyc_taxi_query (2).sql
+│
+├── Jupyter_notebooks/
+│   ├── Initial_exploration_and_cleaning_.ipynb
+│   └── Nyc_Taxi_sample_visualisation_analysis.ipynb
+│
+├── Visual_graph_screenshots/
+│   └── [visualization screenshots]
+│
+└── taxi_zone_lookup.csv
+```
+
+---
+
+## 🔄 Complete Reproduction Flow
 
 For the full project, follow this order:
 
@@ -610,30 +662,57 @@ For the full project, follow this order:
               ↓
 8. Your cleaned_taxi_data table is created
               ↓
-9. Open the EDA SQL file
+9. Upload taxi_zone_lookup.csv
+   to your BigQuery project
               ↓
-10. Replace table references with YOUR
+10. Create taxi_zone_lookup table
+              ↓
+11. Open the EDA SQL file
+              ↓
+12. Replace table references with YOUR
     cleaned table
               ↓
-11. Run the 30 business questions
+13. Run the 30 business questions
               ↓
-12. Use the 100K sample / Python notebooks
-    for visualization and additional EDA
+14. Open the Python / Google Colab notebooks
               ↓
-13. Compare SQL and Python findings
+15. Load the 100K sample
               ↓
-14. Explore the visualizations and insights
+16. Load taxi_zone_lookup.csv
+              ↓
+17. Match Pickup/Drop-off Location IDs
+    with the lookup table
+              ↓
+18. Perform Python visual analysis
+              ↓
+19. Perform geospatial analysis
+              ↓
+20. Explore the final visualizations
+    and insights
 ```
+
+---
+
+## 📦 Alternative: Offline Python Analysis
+
+A **100,000-row sample CSV** is included in the repository.
+
+This allows the Python visualizations and sample analysis to be explored without querying BigQuery.
+
+The CSV contains the sample used for the Python analysis, while the BigQuery SQL files contain the full-scale analysis logic.
+
+The `taxi_zone_lookup.csv` file is also included so that the location IDs in the sample can be mapped to their corresponding taxi zones.
+
+---
 
 > ### ⚠️ Important
 >
 > The author's Google Cloud project is **not required** to reproduce this project.
 >
-> You should create your **own Google Cloud project**, create your own `Nyc_taxi_trips` dataset if necessary, and generate your own `cleaned_taxi_data` table using the provided cleaning SQL.
+> You should create your **own Google Cloud project**, create your own `Nyc_taxi_trips` dataset if necessary, generate your own `cleaned_taxi_data` table using the provided cleaning SQL, and upload the provided `taxi_zone_lookup.csv` as your own lookup table.
 >
-> The public NYC Taxi dataset remains the source dataset; the cleaned table is created inside **your own project**.
+> The public NYC Taxi dataset remains the source dataset. The cleaned table and lookup table are created/imported into **your own project**.
 
----
 
 ## Python Analysis
 
