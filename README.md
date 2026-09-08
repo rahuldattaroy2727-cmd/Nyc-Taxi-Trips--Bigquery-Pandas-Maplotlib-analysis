@@ -2,11 +2,12 @@
 
 # 🚕 NYC Yellow Taxi 2021 — End-to-End Data Analysis
 
-### **28.1M Cleaned Trips · 30 Business Questions · BigQuery + SQL + Python**
+### **28.1M Cleaned Trips · 30 Business Questions · BigQuery + SQL + Python + GeoPandas**
 
 [![BigQuery](https://img.shields.io/badge/Google_BigQuery-4285F4?style=for-the-badge\&logo=google-cloud\&logoColor=white)](https://cloud.google.com/bigquery)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://python.org)
 [![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge\&logo=pandas\&logoColor=white)](https://pandas.pydata.org)
+[![GeoPandas](https://img.shields.io/badge/GeoPandas-139C5A?style=for-the-badge\&logo=python\&logoColor=white)](https://geopandas.org)
 [![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://seaborn.pydata.org)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge\&logo=python\&logoColor=white)](https://matplotlib.org)
 [![Google Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge\&logo=google-colab\&logoColor=white)](https://colab.research.google.com)
@@ -23,9 +24,9 @@
 
 This project presents an **end-to-end exploratory data analysis (EDA)** of the **NYC Yellow Taxi 2021 dataset**, containing more than **30.9 million raw trip records**.
 
-The project focuses heavily on **data quality, cleaning, validation, SQL-based analysis, statistical exploration, and visualization** rather than simply producing charts.
+The project focuses heavily on **data quality, cleaning, validation, SQL-based analysis, statistical exploration, geospatial analysis, and visualization** rather than simply producing charts.
 
-The analysis was performed using **Google BigQuery for large-scale data processing and SQL analysis**, followed by **Python, Pandas, Matplotlib, and Seaborn** for sample-based exploratory analysis and visualization.
+The analysis was performed using **Google BigQuery for large-scale data processing and SQL analysis**, followed by **Python, Pandas, Matplotlib, Seaborn, and GeoPandas** for sample-based exploratory and geospatial analysis.
 
 ### 🔄 Analytical Workflow
 
@@ -49,6 +50,9 @@ NYC Yellow Taxi Public Dataset
               ↓
    Matplotlib + Seaborn Visuals
               ↓
+      Geospatial Analysis
+         + GeoPandas
+              ↓
        Cross-Validation
               ↓
       Business Insights
@@ -68,9 +72,81 @@ The analysis was designed to answer practical business questions around:
 * 💳 Payment preferences
 * 👥 Passenger behavior
 * 📍 Pickup and drop-off locations
+* 🗺️ Geographic distribution of taxi demand
 * 🛣️ Popular routes
 * 📈 Relationships between operational variables
 * 🚨 Data quality and extreme-value detection
+
+---
+
+# 📚 Source Data
+
+This project uses publicly available NYC Taxi & Limousine Commission data together with the official NYC taxi-zone geographic data.
+
+## 🗄️ NYC Yellow Taxi Trip Records
+
+The primary trip dataset is accessed through the **BigQuery public dataset**:
+
+```text
+bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab_2021
+```
+
+The dataset contains the **2021 NYC Yellow Taxi trip records** used for the large-scale SQL analysis and cleaning process.
+
+The public BigQuery dataset is queried directly and does not need to be copied into the user's Google Cloud project.
+
+---
+
+## 🌐 Official NYC TLC Data Source
+
+The original NYC Taxi & Limousine Commission trip-record data and related resources are available from:
+
+**NYC Taxi & Limousine Commission — Trip Record Data**
+
+`https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page`
+
+The 2021 Yellow Taxi Trip Records from this source correspond to the trip data analyzed in this project.
+
+---
+
+## 📍 Taxi Zone Geographic Data
+
+The project also uses the NYC Taxi Zone geographic shapefile for the geospatial analysis.
+
+The downloaded resource is stored in:
+
+```text
+nyc_taxi_trips/
+└── taxi_zones_shape_file/
+```
+
+The shapefile package contains the geographic boundaries of NYC taxi zones and includes files such as:
+
+```text
+.shp
+.shx
+.dbf
+.prj
+.cpg
+```
+
+These files work together and should remain in the **same folder**.
+
+The `.shp` file is loaded using **GeoPandas**, while the accompanying files provide the supporting geometry and projection information required to correctly interpret the shapefile.
+
+---
+
+## 📋 Taxi Zone Lookup Table
+
+The project also includes:
+
+```text
+taxi_zone_lookup.csv
+```
+
+This lookup table provides the relationship between taxi location IDs and their corresponding taxi zones and boroughs.
+
+It is used to make the numeric location IDs in the taxi dataset easier to interpret.
 
 ---
 
@@ -268,6 +344,91 @@ High-volume Manhattan routes can generate large amounts of total revenue through
 
 ---
 
+# 🗺️ Geospatial Analysis
+
+The project extends the traditional EDA with **geospatial analysis using GeoPandas** and the NYC Taxi Zone shapefile.
+
+The taxi trip data contains numeric location identifiers such as:
+
+```text
+PULocationID
+DOLocationID
+```
+
+These IDs are matched with the geographic `LocationID` values contained in the NYC Taxi Zone shapefile.
+
+The shapefile provides the actual geographic boundaries of the taxi zones, allowing the analysis to move beyond tables and conventional charts and visualize taxi activity directly across NYC.
+
+### Geospatial Workflow
+
+```text
+Taxi Trip Data
+      ↓
+PULocationID / DOLocationID
+      ↓
+Aggregate taxi activity by LocationID
+      ↓
+NYC Taxi Zone Shapefile
+      ↓
+GeoPandas GeoDataFrame
+      ↓
+Match LocationID
+      ↓
+Attach aggregated metrics
+      ↓
+Create choropleth maps
+```
+
+Three geospatial visualizations were created:
+
+1. **Pickup demand by taxi zone**
+2. **Drop-off demand by taxi zone**
+3. **Average fare by taxi zone**
+
+The maps use taxi-zone polygons rather than individual trip points, making it possible to compare demand and fare patterns across geographic areas.
+
+---
+
+## 📍 Pickup Demand by Taxi Zone
+
+![Pickup Demand by Taxi Zone](nyc_taxi_trips/taxi_zones_shape_file/Pickup_demand_by_taxi_zone.png)
+
+> **Insight:** Pickup demand is concentrated in specific high-activity areas, particularly across Manhattan and major transportation zones. The choropleth highlights how taxi demand varies substantially between NYC taxi zones.
+
+---
+
+## 📍 Drop-off Demand by Taxi Zone
+
+![Drop-off Demand by Taxi Zone](nyc_taxi_trips/taxi_zones_shape_file/Dropoff_demand_by_taxi_zone.png)
+
+> **Insight:** Drop-off activity shows a geographic distribution that differs from pickup demand, helping identify areas that function as major destinations for taxi journeys.
+
+---
+
+## 💰 Average Fare by Taxi Zone
+
+![Average Fare by Taxi Zone](nyc_taxi_trips/taxi_zones_shape_file/Average_fare_by_taxi_zone.png)
+
+> **Insight:** Average fare varies considerably by pickup zone. Areas associated with longer-distance journeys, including airport-oriented trips, tend to show higher average fares than zones dominated by shorter local journeys.
+
+### 🧠 Why Geospatial Analysis Matters
+
+Traditional charts answer questions such as:
+
+> **"When are taxis busiest?"**
+
+Geospatial analysis allows the project to answer a different class of questions:
+
+> **"Where is taxi demand concentrated?"**
+
+and:
+
+> **"Which geographic areas generate higher-value trips?"**
+
+This provides an additional geographic dimension to the overall business analysis.
+
+---
+
 # 🔑 Key Business Insights
 
 ### 💡 1. November drives volume, while December drives value
@@ -312,6 +473,20 @@ This demonstrates the importance of **data validation, outlier investigation, an
 
 ---
 
+### 💡 7. Taxi demand is geographically concentrated
+
+The geospatial analysis shows that taxi activity is not distributed evenly across NYC. Certain taxi zones consistently experience much higher pickup and drop-off activity than others.
+
+---
+
+### 💡 8. Geographic demand and trip value are different dimensions
+
+A zone can have high trip volume without necessarily having the highest average fare.
+
+The combination of **pickup demand maps** and **average fare maps** provides a more complete picture of taxi-zone performance.
+
+---
+
 # 🛠️ Tools & Technologies
 
 | Technology          | Usage                                                        |
@@ -321,6 +496,7 @@ This demonstrates the importance of **data validation, outlier investigation, an
 | **Google Colab**    | Python analysis environment                                  |
 | **Python**          | Exploratory analysis                                         |
 | **Pandas**          | Data manipulation and statistical analysis                   |
+| **GeoPandas**       | Geographic data processing and spatial visualization         |
 | **Matplotlib**      | Visualization                                                |
 | **Seaborn**         | Statistical visualization                                    |
 
@@ -351,17 +527,27 @@ Nyc-Taxi-Trips--Bigquery-Pandas-Maplotlib-analysis/
     │   ├── ...
     │   └── Screenshot 2026-09-08 002922.png
     │
+    ├── taxi_zones_shape_file/
+    │   ├── *.shp
+    │   ├── *.shx
+    │   ├── *.dbf
+    │   ├── *.prj
+    │   └── *.cpg
+    │
+    ├── taxi_zone_lookup.csv
+    │
     ├── Data_Cleaning_Methodology.md
+    │
     └── Nyc_taxi_dataset_sample(100_000 rows)
 ```
 
-The repository structure has been separated into **SQL, notebooks, visualizations, and methodology**, making the project easier to navigate and reproduce.
+The repository structure has been separated into **SQL, notebooks, visualizations, geographic data, lookup data, and methodology**, making the project easier to navigate and reproduce.
 
 ---
 
 # ▶️ How to Reproduce
 
-This project can be reproduced using **Google BigQuery + Python/Google Colab**.
+This project can be reproduced using **Google BigQuery + Python/Google Colab + GeoPandas**.
 
 > **Important:** You must use your own Google Cloud project and replace the project ID in the SQL files. Do not use the author's project ID.
 
@@ -396,7 +582,58 @@ You do **not** need to copy the public dataset into your project.
 
 ---
 
-## 🧹 Part 2 — Create the Cleaned Table
+# 📍 Part 2 — Taxi Zone Geographic Data
+
+The geospatial portion of this project uses the **NYC Taxi Zone Shapefile**.
+
+The shapefile package is included in:
+
+```text
+nyc_taxi_trips/
+└── taxi_zones_shape_file/
+```
+
+### Step 3 — Keep the Shapefile Components Together
+
+A shapefile is not a single file.
+
+The downloaded taxi-zone shapefile package contains supporting files such as:
+
+```text
+.shp
+.shx
+.dbf
+.prj
+.cpg
+```
+
+These files must remain together in the same folder.
+
+The main `.shp` file contains the geographic shape information, while the other files provide supporting attributes, indexing, and coordinate-reference information.
+
+Do **not** separate or rename individual components unless you know how the shapefile package is structured.
+
+---
+
+### Step 4 — Load the Shapefile with GeoPandas
+
+The `.shp` file is imported into Python using **GeoPandas**.
+
+GeoPandas reads the shapefile and creates a `GeoDataFrame` containing:
+
+* Taxi zone geometry
+* `LocationID`
+* Zone name
+* Borough
+* Shape information
+
+The resulting GeoDataFrame contains the geographic polygons used to create the taxi-zone maps.
+
+The geographic `LocationID` is then matched with the corresponding location IDs from the taxi trip data.
+
+---
+
+## 🧹 Part 3 — Create the Cleaned Table
 
 Before running the EDA queries, you must first create the cleaned table.
 
@@ -408,7 +645,7 @@ nyc_taxi_trips/
     └── Cleaned_nyc_taxi_table_generator (2).sql
 ```
 
-### Step 3 — Update the Project ID
+### Step 5 — Update the Project ID
 
 At the beginning of the SQL file, the cleaned table is created using a project ID.
 
@@ -436,7 +673,7 @@ with your own Project ID.
 
 ---
 
-### Step 4 — Enable the SQL
+### Step 6 — Enable the SQL
 
 The cleaning SQL file contains explanatory comments describing the cleaning decisions.
 
@@ -465,7 +702,7 @@ YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
 
 ---
 
-## 📍 Part 3 — Import the Taxi Zone Lookup Table
+# 📍 Part 4 — Import the Taxi Zone Lookup Table
 
 The project also uses a **Taxi Zone Lookup Table** to translate the numeric pickup and drop-off location IDs in the taxi dataset into meaningful NYC taxi zone names and geographic information.
 
@@ -476,7 +713,7 @@ nyc_taxi_trips/
 └── taxi_zone_lookup.csv
 ```
 
-### Step 5 — Upload the Lookup Table to BigQuery
+### Step 7 — Upload the Lookup Table to BigQuery
 
 After creating the cleaned taxi table, upload:
 
@@ -511,7 +748,7 @@ This allows the numeric location IDs in the taxi dataset to be converted into re
 
 ---
 
-## 📊 Part 4 — Run the 30 Business Questions
+# 📊 Part 5 — Run the 30 Business Questions
 
 Once the cleaned table has been successfully created, open:
 
@@ -540,7 +777,7 @@ Each query is designed to be run independently.
 
 ---
 
-# 🐍 Part 5 — Python / Google Colab Analysis
+# 🐍 Part 6 — Python / Google Colab Analysis
 
 The Python portion of the project uses a **100,000-row random sample** of the cleaned data rather than loading the entire dataset into Pandas.
 
@@ -601,7 +838,60 @@ This lookup will be used for the **geospatial analysis and visualizations** crea
 
 ---
 
-### Step 4 — Install Required Libraries
+### Step 4 — Load the Taxi Zone Shapefile
+
+The taxi-zone shapefile is included in:
+
+```text
+nyc_taxi_trips/
+└── taxi_zones_shape_file/
+```
+
+Use the `.shp` file as the input to **GeoPandas**.
+
+GeoPandas will automatically use the associated:
+
+```text
+.shx
+.dbf
+.prj
+.cpg
+```
+
+files when they are stored alongside the `.shp` file.
+
+The resulting GeoDataFrame contains the taxi-zone polygons and their corresponding `LocationID` values.
+
+These geographic boundaries are then matched with the taxi trip location IDs.
+
+---
+
+### Step 5 — Create the Geospatial Data
+
+For the geospatial visualizations:
+
+1. Aggregate pickup activity by `PULocationID`.
+2. Aggregate drop-off activity by `DOLocationID`.
+3. Calculate average fare by pickup location.
+4. Match these aggregated metrics to the taxi-zone `LocationID`.
+5. Merge the results with the GeoPandas GeoDataFrame.
+6. Use the taxi-zone geometry to create choropleth maps.
+
+This produces three geographic visualizations:
+
+```text
+Pickup Demand by Taxi Zone
+              ↓
+Drop-off Demand by Taxi Zone
+              ↓
+Average Fare by Taxi Zone
+```
+
+The original taxi-zone GeoDataFrame is kept intact while separate analysis DataFrames/GeoDataFrames are created for each metric.
+
+---
+
+### Step 6 — Install Required Libraries
 
 The Python environment requires:
 
@@ -611,9 +901,10 @@ pandas
 db-dtypes
 matplotlib
 seaborn
+geopandas
 ```
 
-Additional geospatial libraries may be required for the geospatial visualizations, depending on the visualization method used.
+Additional dependencies may be installed automatically depending on the Python environment and GeoPandas installation.
 
 ---
 
@@ -635,7 +926,16 @@ nyc_taxi_trips/
 ├── Visual_graph_screenshots/
 │   └── [visualization screenshots]
 │
-└── taxi_zone_lookup.csv
+├── taxi_zones_shape_file/
+│   ├── [shapefile].shp
+│   ├── [shapefile].shx
+│   ├── [shapefile].dbf
+│   ├── [shapefile].prj
+│   └── [shapefile].cpg
+│
+├── taxi_zone_lookup.csv
+│
+└── Data_Cleaning_Methodology.md
 ```
 
 ---
@@ -651,43 +951,52 @@ For the full project, follow this order:
               ↓
 3. Access the public NYC Taxi dataset
               ↓
-4. Open the Cleaning SQL file
+4. Download/use the Taxi Zone Shapefile
               ↓
-5. Replace the author's Project ID
+5. Keep all shapefile components together
+              ↓
+6. Open the Cleaning SQL file
+              ↓
+7. Replace the author's Project ID
    with YOUR Project ID
               ↓
-6. Uncomment the executable SQL
+8. Uncomment the executable SQL
               ↓
-7. Run the Cleaning SQL
+9. Run the Cleaning SQL
               ↓
-8. Your cleaned_taxi_data table is created
+10. Your cleaned_taxi_data table is created
               ↓
-9. Upload taxi_zone_lookup.csv
-   to your BigQuery project
+11. Upload taxi_zone_lookup.csv
+    to your BigQuery project
               ↓
-10. Create taxi_zone_lookup table
+12. Create taxi_zone_lookup table
               ↓
-11. Open the EDA SQL file
+13. Open the EDA SQL file
               ↓
-12. Replace table references with YOUR
+14. Replace table references with YOUR
     cleaned table
               ↓
-13. Run the 30 business questions
+15. Run the 30 business questions
               ↓
-14. Open the Python / Google Colab notebooks
+16. Open the Python / Google Colab notebooks
               ↓
-15. Load the 100K sample
+17. Load the 100K sample
               ↓
-16. Load taxi_zone_lookup.csv
+18. Load taxi_zone_lookup.csv
               ↓
-17. Match Pickup/Drop-off Location IDs
-    with the lookup table
+19. Load the Taxi Zone Shapefile
+    using GeoPandas
               ↓
-18. Perform Python visual analysis
+20. Match LocationID with
+    pickup/drop-off location IDs
               ↓
-19. Perform geospatial analysis
+21. Aggregate geographic metrics
               ↓
-20. Explore the final visualizations
+22. Create geospatial visualizations
+              ↓
+23. Perform Python visual analysis
+              ↓
+24. Explore the final visualizations
     and insights
 ```
 
@@ -695,13 +1004,34 @@ For the full project, follow this order:
 
 ## 📦 Alternative: Offline Python Analysis
 
-A **100,000-row sample CSV** is included in the repository.
+A **100,000-row sample Parquet file** is included in the repository.
 
-This allows the Python visualizations and sample analysis to be explored without querying BigQuery.
+This allows the Python visualizations and sample analysis to be explored **without querying BigQuery**.
 
-The CSV contains the sample used for the Python analysis, while the BigQuery SQL files contain the full-scale analysis logic.
+The Parquet file contains the sample used for the Python analysis, while the BigQuery SQL files contain the full-scale analysis logic.
 
-The `taxi_zone_lookup.csv` file is also included so that the location IDs in the sample can be mapped to their corresponding taxi zones.
+The `taxi_zone_lookup.csv` file is also included separately and can be used to map the numeric pickup and drop-off location IDs to their corresponding taxi zones.
+
+The **Taxi Zone Shapefile** is also included in the repository for reproducing the geospatial visualizations.
+
+The offline workflow is therefore:
+
+```text
+100K Parquet Sample
+        ↓
+     Pandas
+        ↓
+taxi_zone_lookup.csv
+        ↓
+Taxi Zone Shapefile
+        ↓
+    GeoPandas
+        ↓
+Python + Geospatial Visualizations
+```
+
+> **Note:** The offline Parquet sample is intended for exploring the Python and geospatial analysis without accessing the full BigQuery dataset. The complete 30-question SQL analysis still requires access to the cleaned BigQuery table.
+
 
 ---
 
@@ -712,7 +1042,10 @@ The `taxi_zone_lookup.csv` file is also included so that the location IDs in the
 > You should create your **own Google Cloud project**, create your own `Nyc_taxi_trips` dataset if necessary, generate your own `cleaned_taxi_data` table using the provided cleaning SQL, and upload the provided `taxi_zone_lookup.csv` as your own lookup table.
 >
 > The public NYC Taxi dataset remains the source dataset. The cleaned table and lookup table are created/imported into **your own project**.
+>
+> For the geospatial analysis, keep the complete Taxi Zone Shapefile package together and load the `.shp` file using GeoPandas.
 
+---
 
 ## Python Analysis
 
@@ -732,8 +1065,10 @@ The notebooks perform:
 * Passenger analysis
 * Visualization
 * Statistical validation
+* Geospatial analysis
 
 ---
+
 # 📊 Visualizations & Key Insights
 
 The following visualizations were created using a **random sample of 100,000 rows** from the cleaned NYC Yellow Taxi 2021 dataset.
@@ -820,7 +1155,6 @@ The following visualizations were created using a **random sample of 100,000 row
 
 > **Note:** The visualizations are based on a random **100,000-row sample** from the cleaned dataset and are intended to illustrate the major patterns identified during the exploratory data analysis.
 
-
 `nyc_taxi_trips/Visual_graph_screenshots/`
 
 ---
@@ -835,6 +1169,8 @@ This analysis has several important limitations:
 * Some 2021 demand patterns may have been influenced by the continuing effects of the COVID-19 pandemic.
 * Outlier thresholds were established specifically for analytical purposes and should not automatically be interpreted as proof that every excluded transaction was invalid.
 * The analysis focuses on the variables available in the public dataset and therefore cannot explain factors such as weather, traffic conditions, driver availability, or passenger demographics.
+* Geospatial visualizations are based on NYC Taxi Zone boundaries and location IDs rather than actual road-network paths or real-time traffic conditions.
+* Taxi-zone maps represent **trip activity and fare patterns**, not physical road congestion.
 
 ---
 
@@ -857,6 +1193,18 @@ Contains the BigQuery cleaning pipeline and **30 business questions**:
 Contains the exploratory and visualization notebooks:
 
 `nyc_taxi_trips/Jupyter_notebooks/`
+
+### 📍 Geographic Data
+
+Contains the NYC Taxi Zone Shapefile used for the geospatial analysis:
+
+`nyc_taxi_trips/taxi_zones_shape_file/`
+
+### 📋 Taxi Zone Lookup
+
+Contains the taxi-zone ID mapping used throughout the location analysis:
+
+`nyc_taxi_trips/taxi_zone_lookup.csv`
 
 ### 📊 Visualizations
 
@@ -890,6 +1238,10 @@ This project demonstrates practical experience with:
 
 → Using correlation, distributions, averages and medians to understand the data.
 
+**Geospatial analysis**
+
+→ Using GeoPandas and NYC Taxi Zone shapefiles to analyze geographic patterns in taxi demand and fare behavior.
+
 **Cross-tool validation**
 
 → Comparing BigQuery results against Python/Pandas analysis.
@@ -901,6 +1253,10 @@ This project demonstrates practical experience with:
 **Data storytelling**
 
 → Turning analytical results into clear visual and business insights.
+
+**Reproducible analysis**
+
+→ Providing the SQL, notebooks, sample dataset, lookup table and geographic shapefile required to explore the project.
 
 ---
 
