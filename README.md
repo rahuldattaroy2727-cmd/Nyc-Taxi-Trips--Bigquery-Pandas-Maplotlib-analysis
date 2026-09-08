@@ -470,36 +470,63 @@ with a retention rate of approximately **90.93%**.
 > **Note:** Query results may change if the underlying public dataset is updated.
 
 ---
+📍 Part 3 — Import the Taxi Zone Lookup Table
 
-## 📊 Part 3 — Run the 30 Business Questions
+The project also uses a Taxi Zone Lookup Table to translate the numeric pickup and drop-off location IDs in the taxi dataset into meaningful NYC taxi zone names and geographic information.
+
+The lookup file is included in the repository:
+
+nyc_taxi_trips/
+└── taxi_zone_lookup.csv
+Step 5 — Upload the Lookup Table to BigQuery
+
+After creating the cleaned taxi table, upload:
+
+taxi_zone_lookup.csv
+
+to your own BigQuery project.
+
+Create a dataset if you do not already have one:
+
+YOUR_PROJECT_ID.Nyc_taxi_trips
+
+Then create/import the lookup table as:
+
+YOUR_PROJECT_ID.Nyc_taxi_trips.taxi_zone_lookup
+
+When importing the CSV, make sure BigQuery detects the column names from the first row of the file.
+
+The lookup table is used to map:
+
+PULocationID → Pickup Zone
+DOLocationID → Drop-off Zone
+
+This allows the numeric location IDs in the taxi dataset to be converted into readable geographic information.
+
+Important: The lookup table is a supporting reference table and does not replace the original NYC Taxi dataset.
+
+📊 Part 4 — Run the 30 Business Questions
 
 Once the cleaned table has been successfully created, open:
 
-```text
 nyc_taxi_trips/
 └── SQL Files/
     └── EDA_nyc_taxi_query (2).sql
-```
 
 Before running the queries, replace any reference to the author's cleaned table with your own:
 
-```text
 YOUR_PROJECT_ID.Nyc_taxi_trips.cleaned_taxi_data
-```
 
-The SQL file contains **30 business questions** covering:
+The SQL file contains 30 business questions covering:
 
-* Overall trip performance
-* Time and demand
-* Fare and revenue
-* Trip characteristics
-* Payment and passenger analysis
-* Pickup/drop-off locations and routes
+Overall trip performance
+Time and demand
+Fare and revenue
+Trip characteristics
+Payment and passenger analysis
+Pickup/drop-off locations and routes
 
 Each query is designed to be run independently.
-
----
-
 # 🐍 Part 4 — Python / Google Colab Analysis
 
 The Python portion of the project uses a **100,000-row random sample** of the cleaned data rather than loading all 28M+ rows into Pandas.
